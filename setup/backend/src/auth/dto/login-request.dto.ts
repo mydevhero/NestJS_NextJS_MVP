@@ -3,7 +3,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, MinLength } from 'class-validator';
 
-export class LoginRequestDto {
+export class LoginRequestDTO {
   @ApiProperty({
     example: 'Alice',
     description: 'Il nickname univoco dell\'utente'
@@ -11,5 +11,5 @@ export class LoginRequestDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(3)
-  nickname: string;
+  nickname: string = '';
 }

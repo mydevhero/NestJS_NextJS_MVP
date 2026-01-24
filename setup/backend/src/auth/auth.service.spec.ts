@@ -2,43 +2,60 @@
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
-import { prisma } from '../../lib/prisma';
 import { UnauthorizedException } from '@nestjs/common';
+
+// 1. Mock dell'intero modulo prisma PRIMA degli import
+jest.mock('../../lib/prisma', () => ({
+  prisma: {
+    user: {
+      findUnique: jest.fn(),
+      create: jest.fn(),
+    },
+  },
+}));
+
+// 2. Importa DOPO il mock
+import { prisma } from '../../lib/prisma';
 
 describe('AuthService', () => {
   let service: AuthService;
 
-  // Mock dell'oggetto Prisma
-  const mockPrisma = {
-    user: {
-      findUnique: jest.fn(),
-    },
-  };
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        AuthService,
-        { provide: prisma, useValue: mockPrisma },
-      ],
+      providers: [AuthService],
     }).compile();
 
     service = module.get<AuthService>(AuthService);
-    prisma = module.get<prisma>(prisma);
   });
 
-  it('dovrebbe restituire un utente se il nickname esiste', async () => {
-    const mockUser = { id: 1, nickname: 'Alice', email: 'alice@test.com' };
-    (prisma.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
-
-    const result = await service.login('Alice');
-    expect(result).toEqual(mockUser);
-    expect(prisma.user.findUnique).toHaveBeenCalledWith({ where: { nickname: 'Alice' } });
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('dovrebbe lanciare UnauthorizedException se l\'utente non esiste', async () => {
-    (prisma.user.findUnique as jest.Mock).mockResolvedValue(null);
+  describe('login', () => {
+    it('dovrebbe restituire l\'utente esistente', async () => {
+      const mockUser = {
+        id: 1,
+        nickname: 'Alice',
+        email: 'alice@example.com',
+      };
 
-    await expect(service.login('Sconosciuto')).rejects.toThrow(UnauthorizedException);
+      // 3. Usa il mock
+      (prisma.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
+
+      const result = await service.login('Alice');
+      expect(result).toEqual(mockUser);
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({
+        where: { nickname: 'Alice' },
+      });
+    });
+
+    it('dovrebbe lanciare UnauthorizedException se l\'utente non esiste', async () => {
+      (prisma.user.findUnique as jest.Mock).mockResolvedValue(null);
+
+      await expect(service.login('Sconosciuto')).rejects.toThrow(
+        UnauthorizedException,
+      );
+    });
   });
 });

@@ -12,7 +12,7 @@ export class QuizAnswerParamDTO {
   })
   @IsInt()
   @Min(1)
-  userId: number;
+  userId!: number;
 
   @ApiProperty({
     description: 'Indice della risposta selezionata (0-3)',
@@ -23,5 +23,5 @@ export class QuizAnswerParamDTO {
   })
   @IsInt()
   @Min(0)
-  answer: number;
+  answer!: number;
 }

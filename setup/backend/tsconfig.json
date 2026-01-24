@@ -20,5 +20,6 @@
     "strictBindCallApply": true,
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
+    "strict": true
   }
 }

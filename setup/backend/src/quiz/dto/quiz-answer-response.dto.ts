@@ -7,29 +7,29 @@ export class QuizAnswerResponseDTO {
     description: 'ID della risposta creata',
     example: 456
   })
-  id: number;
+  id!: number;
 
   @ApiProperty({
     description: 'ID dell\'utente che ha risposto',
     example: 123
   })
-  userId: number;
+  userId!: number;
 
   @ApiProperty({
     description: 'ID del quiz a cui si è risposto',
     example: 1
   })
-  quizId: number;
+  quizId!: number;
 
   @ApiProperty({
     description: 'Indica se la risposta è corretta',
     example: true
   })
-  isCorrect: boolean;
+  isCorrect!: boolean;
 
   @ApiProperty({
     description: 'Data e ora della risposta',
     example: '2024-01-23T10:30:00.000Z'
   })
-  createdAt: Date;
+  createdAt!: Date;
 }

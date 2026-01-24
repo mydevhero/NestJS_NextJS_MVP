@@ -12,5 +12,5 @@ export class QuizDetailParamDTO {
   })
   @IsInt()
   @Min(1)
-  id: number;
+  id!: number;
 }
