@@ -32,4 +32,10 @@ export class QuizAnswerResponseDTO {
     example: '2024-01-23T10:30:00.000Z'
   })
   createdAt!: Date;
+
+  @ApiProperty({
+    description: 'La spiegazione del quiz, restituita solo dopo la risposta',
+    example: '2+2 fa 4 per le proprietà dell\'aritmetica.'
+  })
+  explanation!: string;
 }

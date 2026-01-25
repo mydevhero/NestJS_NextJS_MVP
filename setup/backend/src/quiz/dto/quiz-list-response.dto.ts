@@ -1,6 +1,6 @@
 // Aggiunto dallo script init.sh
 
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class QuizListResponseDTO {
   @ApiProperty({
@@ -27,4 +27,15 @@ export class QuizListResponseDTO {
     example: false
   })
   completed!: boolean;
+
+  @ApiPropertyOptional({
+    description: 'Dettagli della risposta data dall\'utente'
+  })
+  userSelection?: {
+    selectedOption: number;
+    isCorrect: boolean;
+  };
+
+  @ApiProperty({ description: 'Spiegazione del quiz (mostrata solo se completato)' })
+  explanation?: string;
 }

@@ -1,6 +1,10 @@
 // Aggiunto dallo script init.sh
 
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { prisma } from '../../lib/prisma';
 
 // Import dei DTO di RISPOSTA (non di richiesta per il service)
@@ -25,13 +29,40 @@ export class QuizService {
       },
     });
 
-    return quizzes.map((q): QuizListResponseDTO => ({
-      id: q.id,
-      question: q.question,
-      options: q.options,
-      completed: q.answers?.length > 0,
-    }));
+    return quizzes.map((q): QuizListResponseDTO => {
+      const answer = q.answers?.[0]; // Recuperiamo la risposta se esiste
+
+      return {
+        id: q.id,
+        question: q.question,
+        options: q.options,
+        completed: !!answer,
+        // Aggiungiamo i dettagli della selezione se l'utente ha risposto
+        userSelection: answer
+          ? {
+              selectedOption: answer.selectedOption ?? 0,
+              isCorrect: answer.isCorrect,
+            }
+          : undefined,
+        // Mandiamo la spiegazione solo se ha già risposto
+        explanation: answer ? q.explanation : undefined,
+      };
+    });
   }
+  // async findAll(userId?: number): Promise<QuizListResponseDTO[]> {
+  //   const quizzes = await prisma.quiz.findMany({
+  //     include: {
+  //       answers: userId ? { where: { userId } } : false,
+  //     },
+  //   });
+  //
+  //   return quizzes.map((q): QuizListResponseDTO => ({
+  //     id: q.id,
+  //     question: q.question,
+  //     options: q.options,
+  //     completed: q.answers?.length > 0,
+  //   }));
+  // }
 
   /**
    * Recupera il dettaglio di un quiz per l'area pubblica (SSR).
@@ -50,9 +81,8 @@ export class QuizService {
     });
 
     const totalAnswers = quiz._count.answers;
-    const successRate = totalAnswers > 0
-      ? Math.round((correctAnswers / totalAnswers) * 100)
-      : 0;
+    const successRate =
+      totalAnswers > 0 ? Math.round((correctAnswers / totalAnswers) * 100) : 0;
 
     return {
       question: quiz.question,
@@ -64,9 +94,12 @@ export class QuizService {
   /**
    * Registra la risposta di un utente.
    */
-  async submitAnswer(quizId: number, dto: QuizAnswerParamDTO): Promise<QuizAnswerResponseDTO> {
+  async submitAnswer(
+    quizId: number,
+    dto: QuizAnswerParamDTO,
+  ): Promise<QuizAnswerResponseDTO> {
     const quiz = await prisma.quiz.findUnique({
-      where: { id: quizId }
+      where: { id: quizId },
     });
 
     if (!quiz) throw new NotFoundException('Quiz non trovato');
@@ -94,28 +127,41 @@ export class QuizService {
         userId: dto.userId,
         quizId: quizId,
         isCorrect: isCorrect,
+        selectedOption: dto.answer,
       },
     });
+    // const answer = await prisma.answer.create({
+    //   data: {
+    //     userId: dto.userId,
+    //     quizId: quizId,
+    //     isCorrect: isCorrect,
+    //   },
+    // });
 
     // Ritorna i dati della RISPOSTA creata
     return {
-      id: answer.id,           // ID della risposta
-      userId: answer.userId,   // Chi ha risposto
-      quizId: answer.quizId,   // A quale quiz
+      id: answer.id, // ID della risposta
+      userId: answer.userId, // Chi ha risposto
+      quizId: answer.quizId, // A quale quiz
       isCorrect: answer.isCorrect, // Se è corretta
       createdAt: answer.createdAt, // Quando
+      explanation: quiz.explanation, // La spiegazione!
     };
   }
 
   /**
    * Genera la classifica pubblica.
    */
+  // backend/src/quiz/quiz.service.ts
   async getLeaderboard(): Promise<LeaderboardResponseDTO[]> {
     const users = await prisma.user.findMany({
       select: {
         nickname: true,
         _count: {
-          select: { answers: { where: { isCorrect: true } } },
+          select: {
+            // Contiamo solo le risposte corrette
+            answers: { where: { isCorrect: true } },
+          },
         },
       },
       orderBy: {
@@ -124,11 +170,54 @@ export class QuizService {
       take: 10,
     });
 
-    return users.map((user): LeaderboardResponseDTO => ({
+    // Qui mappiamo esattamente come vuole il tuo DTO
+    return users.map((user) => ({
       nickname: user.nickname,
       _count: {
         answers: user._count.answers,
       },
     }));
   }
+  // async getLeaderboard(): Promise<LeaderboardResponseDTO[]> {
+  //   const users = await prisma.user.findMany({
+  //     select: {
+  //       nickname: true,
+  //       _count: {
+  //         select: {
+  //           answers: { where: { isCorrect: true } }
+  //         },
+  //       },
+  //     },
+  //     orderBy: {
+  //       answers: { _count: 'desc' },
+  //     },
+  //     take: 10,
+  //   });
+  //
+  //   return users.map(user => ({
+  //     nickname: user.nickname,
+  //     score: user._count.answers, // Mappiamo il conteggio su 'score'
+  //   }));
+  // }
+  // async getLeaderboard(): Promise<LeaderboardResponseDTO[]> {
+  //   const users = await prisma.user.findMany({
+  //     select: {
+  //       nickname: true,
+  //       _count: {
+  //         select: { answers: { where: { isCorrect: true } } },
+  //       },
+  //     },
+  //     orderBy: {
+  //       answers: { _count: 'desc' },
+  //     },
+  //     take: 10,
+  //   });
+  //
+  //   return users.map((user): LeaderboardResponseDTO => ({
+  //     nickname: user.nickname,
+  //     _count: {
+  //       answers: user._count.answers,
+  //     },
+  //   }));
+  // }
 }
