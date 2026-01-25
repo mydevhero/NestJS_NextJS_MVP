@@ -14,6 +14,9 @@ async function bootstrap() {
    */
   app.enableCors();
 
+  // Risponde ad /api
+  app.setGlobalPrefix('api');
+
   /**
    * ValidationPipe permette di validare automaticamente i DTO
    * in ingresso usando i decoratori di class-validator.
@@ -42,11 +45,11 @@ async function bootstrap() {
   // Swagger sarà accessibile all'indirizzo http://localhost:3000/api/docs
   SwaggerModule.setup('api/docs', app, document);
 
-  // Avviamo il server sulla porta 3000
-  await app.listen(3000);
+  // Avviamo il server sulla porta 3001
+  await app.listen(3001);
 
-  console.log(`🚀 Server in esecuzione su: http://localhost:3000`);
-  console.log(`📖 Documentazione API: http://localhost:3000/api/docs`);
+  console.log(`Server in esecuzione su: http://localhost:3001`);
+  console.log(`Documentazione API: http://localhost:3001/api/docs`);
 }
 
 bootstrap();
