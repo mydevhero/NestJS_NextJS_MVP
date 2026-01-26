@@ -1,4 +1,4 @@
-// Aggiunto dallo script init.sh
+// Aggiunto dallo script setup.sh
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
@@ -39,3 +39,5 @@ describe('AuthController', () => {
     expect(result).toEqual(mockResponse);
   });
 });
+
+// vim: set tabstop=2 shiftwidth=2 expandtab colorcolumn=121 :

@@ -13,7 +13,7 @@ datasource db {
   provider = "postgresql"
 }
 
-// Aggiunto dallo script init.sh
+// Aggiunto dallo script setup.sh
 
 /**
  * Rappresenta un utente del sistema.

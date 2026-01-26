@@ -1,4 +1,4 @@
-// Aggiunto dallo script init.sh
+// Aggiunto dallo script setup.sh
 
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -14,3 +14,5 @@ import { AuthController } from './auth.controller';
   providers: [AuthService],
 })
 export class AuthModule {}
+
+// vim: set tabstop=2 shiftwidth=2 expandtab colorcolumn=121 :

@@ -1,4 +1,4 @@
-// Aggiunto dallo script init.sh
+// Aggiunto dallo script setup.sh
 
 import "dotenv/config";
 import { PrismaPg } from '@prisma/adapter-pg'
@@ -10,3 +10,5 @@ const adapter = new PrismaPg({ connectionString })
 const prisma = new PrismaClient({ adapter })
 
 export { prisma }
+
+// vim: set tabstop=2 shiftwidth=2 expandtab colorcolumn=121 :

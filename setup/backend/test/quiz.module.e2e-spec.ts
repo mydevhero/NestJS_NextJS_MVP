@@ -1,4 +1,4 @@
-// Aggiunto dallo script init.sh
+// Aggiunto dallo script setup.sh
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
@@ -38,3 +38,5 @@ describe('QuizModule Integration', () => {
       .expect(200);
   });
 });
+
+// vim: set tabstop=2 shiftwidth=2 expandtab colorcolumn=121 :

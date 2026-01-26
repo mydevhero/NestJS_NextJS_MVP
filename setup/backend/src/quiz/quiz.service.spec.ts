@@ -1,4 +1,4 @@
-// Aggiunto dallo script init.sh
+// Aggiunto dallo script setup.sh
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { QuizService } from './quiz.service';
@@ -282,3 +282,5 @@ describe('QuizService (Database Reale)', () => {
     });
   });
 });
+
+// vim: set tabstop=2 shiftwidth=2 expandtab colorcolumn=121 :

@@ -1,4 +1,4 @@
-// Aggiunto dallo script init.sh
+// Aggiunto dallo script setup.sh
 
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, Min } from 'class-validator';
@@ -25,3 +25,5 @@ export class QuizAnswerParamDTO {
   @Min(0)
   answer!: number;
 }
+
+// vim: set tabstop=2 shiftwidth=2 expandtab colorcolumn=121 :

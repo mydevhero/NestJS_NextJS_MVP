@@ -1,4 +1,4 @@
-// Aggiunto dallo script init.sh
+// Aggiunto dallo script setup.sh
 
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
@@ -39,3 +39,5 @@ export class QuizListResponseDTO {
   @ApiProperty({ description: 'Spiegazione del quiz (mostrata solo se completato)' })
   explanation?: string;
 }
+
+// vim: set tabstop=2 shiftwidth=2 expandtab colorcolumn=121 :

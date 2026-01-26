@@ -8,99 +8,150 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKEND_DIR="$SCRIPT_DIR/backend"
+FRONTEND_DIR="$SCRIPT_DIR/frontend"
 
-# NOTA(1) - Crea progetto nest
-nest new backend --strict --package-manager pnpm # Specifica a NestJS di utilizzare pnpm come gestore pacchetti
+source "$SCRIPT_DIR/bin/configure_env.sh"
 
-cd "${BACKEND_DIR}" || exit 1;
+backend() {
+  cd "$SCRIPT_DIR"
 
-# TUTORIAL(1) - Segui il tutorial -> https://www.prisma.io/docs/getting-started/prisma-postgres/quickstart/prisma-orm
-# TUTORIAL(2) - Segui il tutorial -> https://www.prisma.io/docs/getting-started/prisma-orm/add-to-existing-project/prisma-postgres
+  # NOTA(1) - Crea progetto nest
+  nest new backend --strict --package-manager pnpm # Specifica a NestJS di utilizzare pnpm come gestore pacchetti
 
-# TUTORIAL(1.1) - https://www.prisma.io/docs/getting-started/prisma-postgres/quickstart/prisma-orm#1-create-a-new-project
-pnpm add typescript tsx @types/node --save-dev
-pnpm exec npx tsc --init
+  cd "${BACKEND_DIR}" || exit 1;
 
-# TUTORIAL(1.2) - https://www.prisma.io/docs/getting-started/prisma-postgres/quickstart/prisma-orm#2-install-required-dependencies
-# TUTORIAL(2.1) - https://www.prisma.io/docs/getting-started/prisma-orm/add-to-existing-project/prisma-postgres#1-set-up-prisma-orm
-pnpm add prisma @types/node @types/pg --save-dev
-pnpm add @prisma/client @prisma/adapter-pg pg dotenv
+  # TUTORIAL(1) - Segui il tutorial -> https://www.prisma.io/docs/getting-started/prisma-postgres/quickstart/prisma-orm
+  # TUTORIAL(2) - Segui il tutorial -> https://www.prisma.io/docs/getting-started/prisma-orm/add-to-existing-project/prisma-postgres
 
-# Voglio usare Swagger
-pnpm add @nestjs/swagger swagger-ui-express
-pnpm add -D @types/swagger-ui-express
-pnpm add class-validator class-transformer
+  # TUTORIAL(1.1) - https://www.prisma.io/docs/getting-started/prisma-postgres/quickstart/prisma-orm#1-create-a-new-project
+  pnpm add typescript tsx @types/node --save-dev
+  pnpm exec npx tsc --init
 
-# TUTORIAL(1.3) - https://www.prisma.io/docs/getting-started/prisma-postgres/quickstart/prisma-orm#3-configure-esm-support
-# Il tutorial suggerisce di configurare tsconfig.json con una sua configurazione
-# Problema: backend/tsconfig.json è stato creato danno script NOTA(1)
-# Soluzione: faccio un merge manuale del file creato da nest con le modifiche proposte da prisma e creo una patch
-# Mantenimento: nel tempo verifica prima di ogni utilizzo dello script se la base fornita da nest e la configurazione
-#  proposta da prisma sono cambiate, eventualmente fai il merge manuale e crea la patch
+  # TUTORIAL(1.2) - https://www.prisma.io/docs/getting-started/prisma-postgres/quickstart/prisma-orm#2-install-required-dependencies
+  # TUTORIAL(2.1) - https://www.prisma.io/docs/getting-started/prisma-orm/add-to-existing-project/prisma-postgres#1-set-up-prisma-orm
+  pnpm add prisma @types/node @types/pg --save-dev
+  pnpm add @prisma/client @prisma/adapter-pg pg dotenv
 
-# TUTORIAL(2.2) - https://www.prisma.io/docs/getting-started/prisma-orm/add-to-existing-project/prisma-postgres#2-initialize-prisma-orm
-pnpm exec npx prisma init --datasource-provider postgresql --output ../generated/prisma
+  # Swagger e lettura delle variabili d'ambiente (@nestjs/config)
+  pnpm add @nestjs/swagger @nestjs/config swagger-ui-express
+  pnpm add -D @types/swagger-ui-express
+  pnpm add class-validator class-transformer
 
-# !!! : Il file .env è stato settato automaticamente, ma non corrisponde alla
-#  configurazione di questo progetto, lo riempiamo secondo le nostre esigenze
-#
-# Dati di accesso con il container di PostgreSQL
-#  fai corrispondere i dati del container con la stringa
-echo 'DATABASE_URL="postgresql://user:password@localhost:5432/quiz_db?schema=public"' > .env
 
-################################################################################
-# Aggiungiamo i dati di progetto                                               #
-################################################################################
+  # TUTORIAL(1.3) - https://www.prisma.io/docs/getting-started/prisma-postgres/quickstart/prisma-orm#3-configure-esm-support
+  # Il tutorial suggerisce di configurare tsconfig.json con una sua configurazione
+  # Problema: backend/tsconfig.json è stato creato danno script NOTA(1)
+  # Soluzione: faccio un merge manuale del file creato da nest con le modifiche proposte da prisma e creo una patch
+  # Mantenimento: nel tempo verifica prima di ogni utilizzo dello script se la base fornita da nest e la configurazione
+  #  proposta da prisma sono cambiate, eventualmente fai il merge manuale e crea la patch
 
-# A questo punto possiamo aggiungere quel che serve per iniziare il progetto
-#  secondo le specifiche. La definizione "concreta" è nella directory /setup
+  # TUTORIAL(2.2) - https://www.prisma.io/docs/getting-started/prisma-orm/add-to-existing-project/prisma-postgres#2-initialize-prisma-orm
+  pnpm exec npx prisma init --datasource-provider postgresql --output ../generated/prisma
 
-# Copia main.ts
-cp ../setup/backend/src/main.ts src/
+  # !!! : Il file .env è stato settato automaticamente, ma non corrisponde alla
+  #  configurazione di questo progetto, lo riempiamo secondo le nostre esigenze
+  #
+  # Dati di accesso con il container di PostgreSQL
+  #  fai corrispondere i dati del container con la stringa
+  echo '# Solo come esempio' > .env
+  echo '# DATABASE_URL="postgresql://user:password@localhost:5432/quiz_db?schema=public"' >> .env
 
-nest generate module quiz
-nest generate controller quiz
-nest generate service quiz
+  ################################################################################
+  # Aggiungiamo i dati di progetto                                               #
+  ################################################################################
 
-nest generate module auth
-nest generate controller auth
-nest generate service auth
+  # A questo punto possiamo aggiungere quel che serve per iniziare il progetto
+  #  secondo le specifiche. La definizione "concreta" è nella directory /setup
 
-# mkdir -p src/quiz/dto/ || exit 1;
+  # Copia main.ts
+  cp ../setup/backend/src/main.ts src/
 
-# Copia package.json
-cp ../setup/backend/package.json .
+  nest generate module quiz
+  nest generate controller quiz
+  nest generate service quiz
 
-# Copia tsconfig.json
-cp ../setup/backend/tsconfig.json .
+  nest generate module auth
+  nest generate controller auth
+  nest generate service auth
 
-# Copia backend/src
-cp -a ../setup/backend/src .
+  # mkdir -p src/quiz/dto/ || exit 1;
 
-# Test di integrazione module dei quiz
-cp -a ../setup/backend/test .
 
-# Copia la libreria condivisa
-cp -a ../setup/backend/lib .
+  # Copia package.json
+  cp ../setup/backend/package.json .
 
-# Copia Prisma
-cp -a ../setup/backend/prisma .
-cp -a ../setup/backend/prisma.config.ts .
+  # Copia tsconfig.json
+  cp ../setup/backend/tsconfig.json .
 
-# Arrivati fin qui possiamo iniziare la migrazione verso PostgreSQL, ma prima
-#  facciamo il reset nel db casomai ci sono residui vecchi, stiamo
-#  inizializzando un nuovo progetto, quindi è obbligatorio partire con un db che
-#  sia certamente vuoto
-rm -fr prisma/migrations
-pnpm exec prisma migrate reset -f
+  # Copia backend/src
+  cp -a ../setup/backend/src .
 
-# Prepariamo la migrazione col nuovo prisma/schema.prisma
-pnpm exec npx prisma migrate dev --name init
+  # Test di integrazione module dei quiz
+  cp -a ../setup/backend/test .
 
-# Genera i client prisma
-pnpm exec npx prisma generate
+  # Copia la libreria condivisa
+  cp -a ../setup/backend/lib .
 
-# Seeding
-pnpm exec prisma db seed
+  # Copia Prisma
+  cp -a ../setup/backend/prisma .
+  cp -a ../setup/backend/prisma.config.ts .
+
+  # Arrivati fin qui possiamo iniziare la migrazione verso PostgreSQL, ma prima
+  #  facciamo il reset nel db casomai ci sono residui vecchi, stiamo
+  #  inizializzando un nuovo progetto, quindi è obbligatorio partire con un db che
+  #  sia certamente vuoto
+  rm -fr prisma/migrations
+  pnpm exec prisma migrate reset -f
+
+  # Prepariamo la migrazione col nuovo prisma/schema.prisma
+  pnpm exec npx prisma migrate dev --name init
+
+  # Genera i client prisma
+  pnpm exec npx prisma generate
+
+  # Seeding
+  pnpm exec prisma db seed
+} # Fine di backend()
+
+frontend() {
+  cd "$SCRIPT_DIR"
+
+  # Inizia creando il frontend
+#   pnpm exec npx create-next-app@latest frontend
+  pnpm npx create-next-app@latest frontend \
+    --typescript \
+    --tailwind \
+    --eslint \
+    --app \
+    --src-dir \
+    --import-alias "@/*" \
+    --use-pnpm \
+    --yes
+
+  # Pulizia
+  rm frontend/pnpm-lock.yaml
+
+  # Collega il frontend al workspace e creerà un unico file di lock nella root, ottimizzando tutto.
+  pnpm install # sulla root non in frontend
+
+  cd "$FRONTEND_DIR"
+
+  cp -a ../setup/frontend/* .
+}
+
+# Installa i pacchetti mancanti nella root
+if [ ! -d "$SOURCE_DIR/node_modules" ]; then
+  pnpm install
+fi
+
+# Installa il backend se non esiste la directory backend
+if [ ! -d "$BACKEND_DIR" ]; then
+  backend
+fi
+
+# installa il frontend se non esiste la directory frontend
+if [ ! -d "$FRONTEND_DIR" ]; then
+  frontend
+fi
 
 # vim: set tabstop=2 shiftwidth=2 expandtab colorcolumn=121 :

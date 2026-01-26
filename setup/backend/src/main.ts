@@ -1,9 +1,10 @@
-// Aggiunto dallo script init.sh
+// Aggiunto dallo script setup.sh
 
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -42,14 +43,18 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
 
-  // Swagger sarà accessibile all'indirizzo http://localhost:3000/api/docs
+  // Swagger sarà accessibile all'indirizzo http://localhost:3001/api/docs
   SwaggerModule.setup('api/docs', app, document);
 
-  // Avviamo il server sulla porta 3001
-  await app.listen(3001);
+  // Recuperiamo il ConfigService dal modulo
+  const configService = app.get(ConfigService);
 
-  console.log(`Server in esecuzione su: http://localhost:3001`);
-  console.log(`Documentazione API: http://localhost:3001/api/docs`);
+  // Leggiamo la variabile (con un fallback di sicurezza a 3001)
+  const port = configService.get<number>('NESTJS_PORT') || 3001;
+  await app.listen(port);
+
+  console.log(`Server in esecuzione su: http://localhost:%d`, port);
+  console.log(`Documentazione API: http://localhost:%d/api/docs`, port);
 }
 
 bootstrap();

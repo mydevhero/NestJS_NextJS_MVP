@@ -1,4 +1,4 @@
-// Aggiunto dallo script init.sh
+// Aggiunto dallo script setup.sh
 
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -21,3 +21,5 @@ export class QuizDetailResponseDTO {
   })
   successRate!: string;
 }
+
+// vim: set tabstop=2 shiftwidth=2 expandtab colorcolumn=121 :

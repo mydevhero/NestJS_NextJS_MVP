@@ -1,10 +1,10 @@
-// Aggiunto dallo script init.sh
+// Aggiunto dallo script setup.sh
 
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { prisma } from '../../lib/prisma';
 
 @Injectable()
-// Aggiunto dallo script init.sh
+// Aggiunto dallo script setup.sh
 
 export class AuthService {
   async login(nickname: string) {
@@ -17,7 +17,9 @@ export class AuthService {
     }
 
     // In un sistema reale qui genereremmo un JWT.
-    // Per questo test, restituiamo i dati utente per la sessione frontend.
+    // Per questo test (vogliono così), restituisco i dati utente per la sessione frontend.
     return user;
   }
 }
+
+// vim: set tabstop=2 shiftwidth=2 expandtab colorcolumn=121 :
