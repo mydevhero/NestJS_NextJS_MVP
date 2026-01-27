@@ -58,7 +58,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'pnpm'
 
       - name: Install NestJS CLI globally
@@ -66,6 +66,7 @@ jobs:
 
       - name: Make scripts executable
         run: |
+          pnpm install
           chmod +x bin/*.sh
           chmod +x setup.sh 2>/dev/null || true
 
