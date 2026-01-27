@@ -148,7 +148,13 @@ jobs:
           find backend frontend -type d -name ".git" -exec rm -rf {} + 2>/dev/null || true
       
           git add -A
-          git reset -- '**/node_modules/**' '**/.env' '**/.env.local' || true
+          
+          # Reset esplicito di tutte le directory node_modules
+          git reset HEAD node_modules/ 2>/dev/null || true
+          git reset HEAD backend/node_modules/ 2>/dev/null || true
+          git reset HEAD frontend/node_modules/ 2>/dev/null || true
+          git reset HEAD '**/.env' 2>/dev/null || true
+          git reset HEAD '**/.env.local' 2>/dev/null || true
           
           if git diff --cached --quiet; then
             echo "No changes to commit"
@@ -163,6 +169,32 @@ jobs:
             git push origin HEAD:${{ github.event.inputs.branch || 'main' }}
           fi
         continue-on-error: false
+      # - name: Commit generated code
+      #   if: ${{ github.event.inputs.auto_commit != 'false' && success() }}
+      #   run: |
+      #     git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      #     git config --global user.name "github-actions[bot]"
+          
+      #     # Rimuovi eventuali repository Git annidati
+      #     echo "Removing nested git repositories..."
+      #     find backend frontend -type d -name ".git" -exec rm -rf {} + 2>/dev/null || true
+      
+      #     git add -A
+      #     git reset -- '**/node_modules/**' '**/.env' '**/.env.local' || true
+          
+      #     if git diff --cached --quiet; then
+      #       echo "No changes to commit"
+      #     else
+      #       git commit -m "chore: full stack setup via GitHub Actions [automated]
+            
+      #       - Generated backend (NestJS + Prisma + PostgreSQL)
+      #       - Generated frontend (Next.js)
+      #       - Updated pnpm-lock.yaml
+      #       - Both projects built successfully
+      #       "
+      #       git push origin HEAD:${{ github.event.inputs.branch || 'main' }}
+      #     fi
+      #   continue-on-error: false
 
       - name: Upload build artifacts
         if: always()
