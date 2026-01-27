@@ -68,7 +68,7 @@ jobs:
         run: |
           pnpm install
           chmod +x bin/*.sh
-          chmod +x setup.sh 2>/dev/null || true
+          chmod +x setup.sh || true
 
       - name: Start PostgreSQL database
         env:
