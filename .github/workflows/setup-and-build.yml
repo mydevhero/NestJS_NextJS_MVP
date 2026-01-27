@@ -123,12 +123,13 @@ jobs:
       #   continue-on-error: false
         
       - name: Run frontend setup
-        run: ./bin/setup_frontend.sh
+        run: |
+          ./bin/setup_frontend.sh
+          cd frontend
+          pnpm install -no-frozen-lockfile
 
       - name: Build frontend
-        run: |
-          # cd frontend
-          pnpm --filter frontend build
+        run: pnpm --filter frontend build
 
       - name: Commit generated code
         if: ${{ github.event.inputs.auto_commit != 'false' && success() }}
