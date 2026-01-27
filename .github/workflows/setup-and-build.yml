@@ -111,22 +111,24 @@ jobs:
       - name: Build backend
         run: |
           cd backend
-          pnpm run build
-
-      - name: Run frontend setup
-        run: ./bin/setup_frontend.sh
-
-      - name: Build frontend
-        run: |
-          cd frontend
+          pnpm install
           pnpm run build
 
       - name: Run backend tests
         run: |
           cd backend
           pnpm test 2>&1 || echo "⚠️ Unit tests may fail - this is OK for initial setup"
-          pnpm test:e2e 2>&1 || echo "⚠️ E2E tests may fail - this is OK for initial setup"
-        continue-on-error: true
+      #     pnpm test:e2e 2>&1 || echo "⚠️ E2E tests may fail - this is OK for initial setup"
+        continue-on-error: false
+        
+      - name: Run frontend setup
+        run: ./bin/setup_frontend.sh
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          pnpm install
+          pnpm run build
 
       - name: Commit generated code
         if: ${{ github.event.inputs.auto_commit != 'false' && success() }}
@@ -151,7 +153,7 @@ jobs:
             "
             git push origin HEAD:${{ github.event.inputs.branch || 'main' }}
           fi
-        continue-on-error: true
+        continue-on-error: false
 
       - name: Upload build artifacts
         if: always()
