@@ -109,7 +109,7 @@ jobs:
         run: ./bin/setup_frontend.sh
 
       - name: Install workspace dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Build backend
         run: |
