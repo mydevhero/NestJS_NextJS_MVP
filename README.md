@@ -1,8 +1,11 @@
-# 🧠 QuizLogic MVP
+# QuizLogic MVP
 
-Un'applicazione Full-Stack per quiz di logica, progettata con un'architettura moderna che bilancia sicurezza, prestazioni SEO (SSR) e interattività (CSR).
+* Un'applicazione Full-Stack per quiz di logica, progettata con un'architettura moderna che bilancia sicurezza, prestazioni SEO (SSR) e interattività (CSR).
+* Considerala come una **base** utile per studiare e iniziare a sviluppare app **NestJS** e **NextJS**
 
-## 🚀 **Avvio Rapido**
+---
+
+## Avvio Rapido
 
 ### Prerequisiti
 - Node.js 24+ & pnpm (npm install -g pnpm)
@@ -27,6 +30,7 @@ Nella root del progetto
 ```bash
 pnpm dev
 ```
+
 ---
 
 ## Cosa è stato implementato in questo MVP
@@ -43,6 +47,8 @@ pnpm dev
 - [x] Autenticazione semplificata utente
 - [x] Documentazione API con Swagger
 - [x] Suite di test unitari e test end to end
+
+---
 
 ## Note architetturali
 
@@ -63,7 +69,6 @@ Per l'interazione con il database ho scelto **Prisma**.
 * *Perché:* È un ORM *Type-safe*. Se cambiamo il nome di una colonna nel database, TypeScript ci segnalerà l'errore in tutto il codice backend.
 * **Relational Mapping:** Ho gestito relazioni complesse (Utente -> Risposta -> Quiz) per permettere il calcolo in tempo reale della classifica (Leaderboard) senza appesantire il database.
 
-
 ### 3. Strategia di Rendering: Next.js
 
 Ho sfruttato la natura ibrida di Next.js per massimizzare sia le performance che l'esperienza utente.
@@ -72,7 +77,6 @@ Ho sfruttato la natura ibrida di Next.js per massimizzare sia le performance che
 * *Perché:* Questo permette di servire HTML pronto all'uso, migliorando il **First Contentful Paint (FCP)** e garantendo l'indicizzazione SEO dei contenuti.
 * **CSR (Client-Side Rendering) per l'interattività:** Le card dei quiz utilizzano `'use client'` per gestire lo stato locale complesso (selezione opzioni, timer, feedback dinamico).
 * **Hydration e Streaming:** L'uso dei Server Components permette di ridurre drasticamente il bundle JavaScript inviato al client, caricando solo ciò che è necessario per l'interazione.
-
 
 ### 4. DevOps e Infrastruttura: Docker & Automation
 
@@ -99,7 +103,6 @@ Il frontend non è una semplice Single Page Application (SPA), ma un sistema ibr
 
 * **Server-Side Rendering (SSR):** Usato per la **Classifica** e il **Dettaglio Quiz**.
 * *Perché:* Velocità di caricamento (First Contentful Paint) e SEO. I dati arrivano già pronti dal server.
-
 
 * **Client-Side Rendering (CSR):** Usato per le **QuizCard**.
 * *Perché:* Per gestire stati interattivi complessi (feedback dei colori, selezione opzioni, caricamenti) senza ricaricare la pagina, offrendo un'esperienza "app-like".
@@ -167,7 +170,6 @@ La lista che segue è l'elenco delle variabili necessarie per avviare i servizi.
 | NESTJS_PORT | Porta TCP del backend | 3001 |
 | NEXTJS_PORT | Porta TCP del frontend | 3000 |
 
-
 ### Dove si configurano?
 
 * Puoi settarle nel più classico `.env`, ma in questo caso devi considerare di applicare le modifiche all'eventuale container per PostgreSQL e dell'aggiornamento di Prisma.
@@ -184,7 +186,9 @@ Se modifichi i valori di default o modifichi i valori delle variabili esportate 
    ./bin/stop_db.sh
    ./bin/start_db.sh
   ```
-* Riavviare il backend e il frontend per renderle effettive.
+* Riavviare il backend e il frontend per rendere effettive le modifiche.
+
+---
 
 ## Test & Build
 
@@ -239,9 +243,11 @@ docker-compose logs -f
 pnpm build
 ```
 
-## **Troubleshooting**
+---
 
-### **Common Issues**
+## Troubleshooting
+
+### Common Issues
 
 1. **Database connection failed**
    ```bash
@@ -274,7 +280,9 @@ pnpm build
    bin/prisma_reset.sh
    ```
 
-## **Risorse per imparare**
+---
+
+## Risorse per imparare
 
 - [Documentazione NestJS](https://docs.nestjs.com/)
 - [Documentazione NextJS](https://nextjs.org/docs)
@@ -282,6 +290,8 @@ pnpm build
 - [Docker Compose](https://docs.docker.com/compose/)
 - [Manuale TypeScript](https://www.typescriptlang.org/docs/)
 
-## **Licenza**
+---
+
+## Licenza
 
 Nessuna! Ti chiedo solo di imparare divertendoti ^^
