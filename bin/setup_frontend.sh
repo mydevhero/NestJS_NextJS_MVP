@@ -18,8 +18,7 @@ cd "$PROJECT_DIR"
 # pnpm install -no-frozen-lockfile
 
 # Inizia creando il frontend
-#   pnpm exec npx create-next-app@latest frontend
-pnpm exec npx create-next-app@latest frontend \
+pnpm npx create-next-app@latest frontend \
   --typescript \
   --tailwind \
   --eslint \
@@ -32,7 +31,7 @@ pnpm exec npx create-next-app@latest frontend \
 cd "$FRONTEND_DIR"
 
 # Pulizia
-rm pnpm-lock.yaml
+# rm pnpm-lock.yaml
 
 # Collega il frontend al workspace e creerà un unico file di lock nella root, ottimizzando tutto.
 #pnpm install # sulla root non in frontend
