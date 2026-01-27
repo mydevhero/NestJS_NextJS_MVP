@@ -126,7 +126,7 @@ jobs:
         run: |
           ./bin/setup_frontend.sh
           cd frontend
-          pnpm install -no-frozen-lockfile
+          pnpm install
 
       - name: Build frontend
         run: pnpm --filter frontend build
