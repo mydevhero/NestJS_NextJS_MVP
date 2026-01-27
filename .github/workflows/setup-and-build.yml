@@ -111,8 +111,8 @@ jobs:
 
       - name: Build backend
         run: |
-          cd backend
-          pnpm run build
+          # cd backend
+          pnpm --filter backend build
         continue-on-error: false
 
       # - name: Run backend tests
@@ -127,8 +127,8 @@ jobs:
 
       - name: Build frontend
         run: |
-          cd frontend
-          pnpm run build
+          # cd frontend
+          pnpm --filter frontend build
 
       - name: Commit generated code
         if: ${{ github.event.inputs.auto_commit != 'false' && success() }}
