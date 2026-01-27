@@ -59,13 +59,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-
+          cache: 'pnpm'
+        
       - name: Install NestJS CLI globally
         run: pnpm add -g @nestjs/cli
 
+      - name: Install workspace dependencies
+        run: pnpm install
+        
       - name: Make scripts executable
         run: |
-          pnpm install
           chmod +x bin/*.sh
           chmod +x setup.sh || true
 
@@ -93,9 +96,6 @@ jobs:
           source bin/configure_env.sh
           echo "DATABASE_URL: $DATABASE_URL"
           docker exec $POSTGRES_DB pg_isready -U $POSTGRES_USER
-
-      - name: Install workspace dependencies
-        run: pnpm install
 
       - name: Run backend setup
         run: ./bin/setup_backend.sh
