@@ -1,16 +1,17 @@
 {
-  "name": "frontend NextJS",
+  "name": "frontend",
   "description": "Questo frontend è troppo bello!",
   "author": "Alessandro Bianco <mydevhero@gmail.com>",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": ". ../bin/configure_env.sh && next dev -p ${NEXTJS_PORT:-3000}",
-    "build": ". ../bin/configure_env.sh && next build -p ${NEXTJS_PORT:-3000}",
-    "start": ". ../bin/configure_env.sh && next start -p ${NEXTJS_PORT:-3000}",
+    "build": ". ../bin/configure_env.sh && next build",
+    "start": ". ../bin/configure_env.sh && next start",
     "lint": "eslint"
   },
   "dependencies": {
+    "@netlify/plugin-nextjs": "^5.15.7",
     "next": "16.1.4",
     "react": "19.2.3",
     "react-dom": "19.2.3"
