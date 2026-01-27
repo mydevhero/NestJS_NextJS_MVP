@@ -51,7 +51,7 @@ pnpm add class-validator class-transformer
 pnpm exec npx prisma init --datasource-provider postgresql --output ../generated/prisma
 
 # !!! : Il file .env è stato settato automaticamente, ma non corrisponde alla
-#  configurazione di questo progetto, lo riempiamo secondo le nostre esigenze
+#  configurazione di questo progetto, lo usiamo come documentazione
 #
 # Dati di accesso con il container di PostgreSQL
 #  fai corrispondere i dati del container con la stringa
@@ -97,8 +97,6 @@ cp -a "$SETUP_BACKEND_DIR/lib" .
 # Copia Prisma
 cp -a "$SETUP_BACKEND_DIR/prisma" .
 cp -a "$SETUP_BACKEND_DIR/prisma.config.ts" .
-
-pnpm install --no-frozen-lockfile
 
 # Arrivati fin qui possiamo iniziare la migrazione verso PostgreSQL, ma prima
 #  facciamo il reset nel db casomai ci sono residui vecchi, stiamo
