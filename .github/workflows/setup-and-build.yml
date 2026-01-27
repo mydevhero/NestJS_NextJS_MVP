@@ -94,6 +94,12 @@ jobs:
           echo "DATABASE_URL: $DATABASE_URL"
           docker exec $POSTGRES_DB pg_isready -U $POSTGRES_USER
 
+      - name: Install workspace dependencies
+        run: pnpm install
+
+      - name: Run backend setup
+        run: ./bin/setup_backend.sh
+        
       - name: Setup environment files
         run: |
           echo "Creating backend .env file..."
@@ -102,19 +108,13 @@ jobs:
           NODE_ENV=$NODE_ENV
           EOF
 
-      - name: Run backend setup
-        run: ./bin/setup_backend.sh
-
-      - name: Run frontend setup
-        run: ./bin/setup_frontend.sh
-
-      - name: Install workspace dependencies
-        run: pnpm install
-
       - name: Build backend
         run: |
           cd backend
           pnpm run build
+
+      - name: Run frontend setup
+        run: ./bin/setup_frontend.sh
 
       - name: Build frontend
         run: |
