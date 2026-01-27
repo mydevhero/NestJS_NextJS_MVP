@@ -98,6 +98,8 @@ cp -a "$SETUP_BACKEND_DIR/lib" .
 cp -a "$SETUP_BACKEND_DIR/prisma" .
 cp -a "$SETUP_BACKEND_DIR/prisma.config.ts" .
 
+pnpm install --no-frozen-lockfile
+
 # Arrivati fin qui possiamo iniziare la migrazione verso PostgreSQL, ma prima
 #  facciamo il reset nel db casomai ci sono residui vecchi, stiamo
 #  inizializzando un nuovo progetto, quindi è obbligatorio partire con un db che
