@@ -282,10 +282,10 @@ pnpm build
 
 ---
 
-## Deply
+## Deploy
 
 * Database: [Neon.tech](https://neon.tech)
-* Frontend: [Netfly](https://netfly.com)
+* Frontend: [Netfly](https://netfly.com) [![Netlify Status](https://api.netlify.com/api/v1/badges/bfd5ad0b-d842-490e-9281-1f184d5d001e/deploy-status)](https://app.netlify.com/projects/euphonious-scone-af5c96/deploys)
 * Backend: [Render](https://render.com)
 
 ---
