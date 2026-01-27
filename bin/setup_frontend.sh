@@ -15,7 +15,7 @@ source "$SCRIPT_DIR/configure_env.sh"
 
 cd "$PROJECT_DIR"
 
-# pnpm install -no-frozen-lockfile
+export PNPM_INSTALL_ARGS="--no-frozen-lockfile"
 
 # Inizia creando il frontend
 pnpm npx create-next-app@latest frontend \
@@ -31,5 +31,8 @@ pnpm npx create-next-app@latest frontend \
 cd "$FRONTEND_DIR"
 
 cp -a "$SETUP_FRONTEND_DIR"/* .
+
+# rm pnpm-lock.yaml
+pnpm install -no-frozen-lockfile
 
 # vim: set tabstop=2 shiftwidth=2 expandtab colorcolumn=121 :
