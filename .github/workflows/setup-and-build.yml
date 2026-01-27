@@ -128,7 +128,6 @@ jobs:
       - name: Build frontend
         run: |
           cd frontend
-          pnpm install --no-frozen-lockfile
           pnpm run build
 
       - name: Commit generated code
