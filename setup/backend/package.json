@@ -7,7 +7,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": ". ../bin/configure_env.sh && nest build",
+    "build": ". ../bin/configure_env.sh && pnpm exec nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "prisma:generate": "../bin/prisma_generate.sh",
     "prisma:migrate": "../bin/prisma_migrate.sh",
