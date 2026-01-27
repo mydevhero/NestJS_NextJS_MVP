@@ -111,7 +111,7 @@ jobs:
       - name: Build backend
         run: |
           cd backend
-          pnpm install
+          pnpm install --no-frozen-lockfile
           pnpm run build
 
       - name: Run backend tests
@@ -127,7 +127,7 @@ jobs:
       - name: Build frontend
         run: |
           cd frontend
-          pnpm install
+          pnpm install --no-frozen-lockfile
           pnpm run build
 
       - name: Commit generated code
