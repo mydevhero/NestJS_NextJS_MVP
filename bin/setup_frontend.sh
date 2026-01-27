@@ -30,12 +30,6 @@ pnpm npx create-next-app@latest frontend \
 
 cd "$FRONTEND_DIR"
 
-# Pulizia
-# rm pnpm-lock.yaml
-
-# Collega il frontend al workspace e creerà un unico file di lock nella root, ottimizzando tutto.
-#pnpm install # sulla root non in frontend
-
 cp -a "$SETUP_FRONTEND_DIR"/* .
 
 # vim: set tabstop=2 shiftwidth=2 expandtab colorcolumn=121 :
