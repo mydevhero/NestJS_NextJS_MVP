@@ -110,9 +110,7 @@ jobs:
           EOF
 
       - name: Build backend
-        run: |
-          # cd backend
-          pnpm --filter backend build
+        run: pnpm --filter backend build
         continue-on-error: false
 
       # - name: Run backend tests
