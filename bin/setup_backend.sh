@@ -18,7 +18,7 @@ source "$SCRIPT_DIR/configure_env.sh"
 cd "$PROJECT_DIR"
 
 # NOTA(1) - Crea progetto nest
-nest new backend --strict --package-manager pnpm # Specifica a NestJS di utilizzare pnpm come gestore pacchetti
+nest new backend --skip-git --strict --package-manager pnpm # Specifica a NestJS di utilizzare pnpm come gestore pacchetti
 
 cd "${BACKEND_DIR}" || exit 1;
 
