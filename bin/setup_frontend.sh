@@ -15,7 +15,7 @@ source "$SCRIPT_DIR/configure_env.sh"
 
 cd "$PROJECT_DIR"
 
-pnpm install
+pnpm install -no-frozen-lockfile
 
 # Inizia creando il frontend
 #   pnpm exec npx create-next-app@latest frontend
