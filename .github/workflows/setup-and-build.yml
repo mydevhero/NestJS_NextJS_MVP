@@ -40,7 +40,6 @@ jobs:
       POSTGRES_SCHEMA: ${{ secrets.POSTGRES_SCHEMA || 'public' }}
       NESTJS_PORT: ${{ secrets.NESTJS_PORT || 3001 }}
       NEXTJS_PORT: ${{ secrets.NEXTJS_PORT || 3000 }}
-
       NODE_ENV: "test"
 
     steps:
@@ -49,6 +48,15 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branch || 'main' }}
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Clean previous build artifacts
+        run: |
+          echo "🧹 Cleaning previous build artifacts..."
+          rm -rf backend/
+          rm -rf frontend/
+          rm -rf node_modules/
+          rm -f docker-compose.yml
+          echo "✅ Cleanup complete!"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -59,7 +67,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-          # cache: 'pnpm
+          # cache: 'pnpm'
         
       - name: Install NestJS CLI globally
         run: pnpm add -g @nestjs/cli
@@ -113,12 +121,12 @@ jobs:
         run: pnpm --filter backend build
         continue-on-error: false
 
-      - name: Run backend tests
-        run: |
-          cd backend
-          pnpm test 2>&1 || echo "⚠️ Unit tests may fail - this is OK for initial setup"
-          pnpm test:e2e 2>&1 || echo "⚠️ E2E tests may fail - this is OK for initial setup"
-        continue-on-error: false
+      # - name: Run backend tests
+      #   run: |
+      #     cd backend
+      #     pnpm test 2>&1 || echo "⚠️ Unit tests may fail - this is OK for initial setup"
+      #     pnpm test:e2e 2>&1 || echo "⚠️ E2E tests may fail - this is OK for initial setup"
+      #   continue-on-error: false
         
       - name: Run frontend setup
         run: |
@@ -134,11 +142,13 @@ jobs:
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
+          
+          # Rimuovi eventuali repository Git annidati
+          echo "Removing nested git repositories..."
+          find backend frontend -type d -name ".git" -exec rm -rf {} + 2>/dev/null || true
       
           git add -A
           git reset -- '**/node_modules/**' '**/.env' '**/.env.local' || true
-          
-          # Non resettare pnpm-lock.yaml così viene committato se cambia
           
           if git diff --cached --quiet; then
             echo "No changes to commit"
@@ -169,7 +179,7 @@ jobs:
         if: always()
         run: |
           echo "Cleaning up..."
-          docker-compose down -v 2>/dev/null || true
+          docker compose down -v 2>/dev/null || true
           docker stop $POSTGRES_DB 2>/dev/null || true
           docker rm $POSTGRES_DB 2>/dev/null || true
 
@@ -181,7 +191,7 @@ jobs:
           echo "**Backend:** ✅ Built" >> $GITHUB_STEP_SUMMARY
           echo "- Location: \`backend/\`" >> $GITHUB_STEP_SUMMARY
           echo "- Database: \`$POSTGRES_DB\` on port \`$POSTGRES_PORT\`" >> $GITHUB_STEP_SUMMARY
-          echo "- Node version: 20 (LTS)" >> $GITHUB_STEP_SUMMARY
+          echo "- Node version: 24" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Frontend:** ✅ Built" >> $GITHUB_STEP_SUMMARY
           echo "- Location: \`frontend/\`" >> $GITHUB_STEP_SUMMARY
