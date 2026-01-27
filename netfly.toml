@@ -1,10 +1,10 @@
 [build]
   # Eseguiamo la build solo per il frontend usando il filtro di pnpm
   # command = "pnpm run build --filter frontend"
-  command = "pnpm install && bin/setup_frontend.sh && pnpm --filter frontend build"
+  # command = "pnpm install && bin/setup_frontend.sh && pnpm --filter frontend build"
 
   # Specifichiamo dove Netlify troverà l'output di Next.js
-  publish = "frontend/.next"
+  publish = "frontend/public"
 
 [build.environment]
   # Forza Netlify a usare pnpm e specifica la versione se necessario
