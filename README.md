@@ -1,4 +1,4 @@
-# QuizLogic MVP
+# NestJS NextJS MVP
 
 * Un'applicazione Full-Stack per quiz di logica, progettata con un'architettura moderna che bilancia sicurezza, prestazioni SEO (SSR) e interattività (CSR).
 * Considerala come una **base** utile per studiare e iniziare a sviluppare app **NestJS** e **NextJS**
@@ -279,6 +279,14 @@ pnpm build
    # Reset database
    bin/prisma_reset.sh
    ```
+
+---
+
+## Deply
+
+* Database: [Neon.tech](https://neon.tech)
+* Frontend: [Netfly](https://netfly.com)
+* Backend: [Render](https://render.com)
 
 ---
 
