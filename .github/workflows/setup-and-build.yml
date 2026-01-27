@@ -95,7 +95,7 @@ jobs:
           docker exec $POSTGRES_DB pg_isready -U $POSTGRES_USER
 
       - name: Install workspace dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install
 
       - name: Run backend setup
         run: ./bin/setup_backend.sh
