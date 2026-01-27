@@ -10,7 +10,8 @@
     "test": "pnpm -r run test",
     "test:e2e": "pnpm -r run test:e2e",
     "build": "pnpm -r run build",
-    "prisma:studio": "pnpm -r prisma:studio"
+    "prisma:studio": "pnpm -r prisma:studio",
+    "install": "pnpm -r run install"
   },
   "keywords": [],
   "license": "ISC",
