@@ -4,18 +4,18 @@ Un'applicazione Full-Stack per quiz di logica, progettata con un'architettura mo
 
 ## 🚀 **Avvio Rapido**
 
-### **Prerequisiti**
+### Prerequisiti
 - Node.js 24+ & pnpm (npm install -g pnpm)
 - Docker & Docker Compose
 
-### **Installazione**
+### Installazione
 ```bash
 # Clone repository
 git clone https://github.com/mydevhero/NestJS_NextJS_MVP.git
 cd NestJS_NextJS_MVP
 ```
 
-### **Setup**
+### Setup
 ```bash
 ./setup.sh
 ```
@@ -29,7 +29,22 @@ pnpm dev
 ```
 ---
 
-## 🏛️ Note architetturali
+## Cosa è stato implementato in questo MVP
+
+- [x] REST API utilizzando NestJS
+- [x] TypeScript inside
+- [x] Database in un container
+- [x] PostgreSQL con Prisma ORM
+- [x] validazione e "Type-safe" con DTO
+- [x] Frontend moderno con NextJS
+- [x] Completo sistema di quiz (CRUD)
+- [x] Classifica utenti
+- [x] Statistiche per ogni risposta
+- [x] Autenticazione semplificata utente
+- [x] Documentazione API con Swagger
+- [x] Suite di test unitari e test end to end
+
+## Note architetturali
 
 ### 1. Architettura del Backend ("NestJS, OpenAPI, DTO, class-validator e TypeScript" = "robustezza")
 
@@ -117,27 +132,63 @@ Invece di utilizzare il classico `localStorage` per i token, ho optato per una g
 * Il cookie trasporta solo ID, email e nickname dell'utente.
 * L'utilizzo di cookie permette ai 'Server Components' di accedere ai dati dell'utente istantaneamente durante il rendering, evitando il "salto" di contenuto (layout shift) tipico delle app che caricano i dati solo lato client.
 
----
-
-## 🛠️ Riassunto dello stack tecnologico
+### 10. Riassunto dello stack tecnologico
 
 | Tecnologia | Utilizzo | Perché? |
 | --- | --- | --- |
-│ **Package Manager**: pnpm │ Più rigido ed efficiente di npm |
-| **Database**: | PostgreSQL | Perché è magnifico |
-| **NestJS**: | Backend API | Struttura modulare ed enterprise-grade |
-| **Prisma**: | ORM | Type-safety e facilità di migrazione DB |
-| **Swagger**: | API Doc | Documentazione vivente e testing semplificato |
-| **Validazione**: | class-validator & DTOs per un contratto dati rigoroso tra FE e BE |
-| **Docker**: | Deployment | Portabilità assoluta tra ambienti diversi |
-| **Next.js**: | Frontend Framework | Ottime performance grazie a Server Components |
-| **Tailwind CSS**: | Styling | Sviluppo UI rapidissimo e design system coerente |
-│ **Testing**: | Jest + Supertest │ Verifichiamo che tutto sia funzionante prima di andare in produzione |
+| **Package Manager** | pnpm | Più rigido ed efficiente di npm |
+| **Database** | PostgreSQL | Perché è magnifico |
+| **NestJS** | Backend API | Struttura modulare ed enterprise-grade |
+| **Prisma** | ORM | Type-safety e facilità di migrazione DB |
+| **Swagger** | API Doc | Documentazione vivente e testing semplificato |
+| **Validazione** | class-validator & DTOs | Contratto dati rigoroso tra FE e BE |
+| **Docker** | Deployment | Portabilità assoluta tra ambienti diversi |
+| **Next.js** | Frontend Framework | Ottime performance grazie a Server Components |
+| **Tailwind CSS** | Styling | Sviluppo UI rapidissimo e design system coerente |
+| **Testing** | Jest + Supertest | Verifichiamo che tutto sia funzionante prima di andare in produzione |
+
 ---
 
-## Informazioni avanzate
+## Configurazione
 
-### **Lancio della suite di test**
+### Variabili d'ambiente
+
+La lista che segue è l'elenco delle variabili necessarie per avviare i servizi. In ambiente di sviluppo e test puoi usare i valori di default, mentre in produzione è fortemente consigliato impostarle singolarmente e non utilizzare i valori di default
+
+| Nome | Descrizione | Valore di default |
+| --- | --- | --- |
+| POSTGRES_USER | Nome utente | user |
+| POSTGRES_PASSWORD | Passowrd di accessp | password |
+| POSTGRES_HOST | Indirizzo Nome/IP |  localhost |
+| POSTGRES_PORT | Porta TCP | 5432 |
+| POSTGRES_DB | Nome del database | quiz_db |
+| POSTGRES_SCHEMA | Schema | public |
+| DATABASE_URL | Stringa di connessione | postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=${POSTGRES_SCHEMA} |
+| NESTJS_PORT | Porta TCP del backend | 3001 |
+| NEXTJS_PORT | Porta TCP del frontend | 3000 |
+
+
+### Dove si configurano?
+
+* Puoi settarle nel più classico `.env`, ma in questo caso devi considerare di applicare le modifiche all'eventuale container per PostgreSQL e dell'aggiornamento di Prisma.
+* Puoi impostarle tramite lo script `bin/configure_env.sh`, in questo caso non ti devi preoccupare di altro
+* Nell'interfaccia del tuo fornitore di servizi.
+
+### Come si applicano?
+
+Se modifichi i valori di default o modifichi i valori delle variabili esportate nel proprio ambiente di produzione, ricorda di:
+
+* Riavviare i servizi docker del database eventualmente utilizzati:
+  ```bash
+  # Usa questi script perché fanno delle azioni anche nei confronti di Prisma (ORM)
+   ./bin/stop_db.sh
+   ./bin/start_db.sh
+  ```
+* Riavviare il backend e il frontend per renderle effettive.
+
+## Test & Build
+
+### Lancio della suite di test
 
 **Unit Tests**
 ```bash
@@ -149,158 +200,90 @@ pnpm test
 pnpm test:e2e
 ```
 
-# Build per la produzione
+### Build per la produzione
 ```bash
 pnpm build
 ```
 
+### Cosa si espone
 
-## 🔧 **Variabili d'ambiente**
-
-### **Backend (.env)**
-```env
-# DATABASE_URL="postgresql://user:password@localhost:5432/quiz_db"
-```
-
-#### **Quiz Management**
+**API**
 - `GET /quiz` - List all quizzes with completion status
 - `GET /quiz/:id` - Get quiz details with explanation
 - `POST /quiz/:id/answer` - Submit answer to quiz
 - `GET /quiz/leaderboard` - Get user rankings
 
-### **API Documentation**
-Access Swagger UI at: `http://localhost:3000/api` when backend is running
+**Documentazione API**
+Acceddi alal UI di Swagger a: `http://localhost:${NESTJS_PORT}/api/docs` quando il backend è attivo, usa il valore della porta della variabile NESTJS_PORT
 
-## 🔐 **Authentication Flow**
-1. User submits nickname via `/auth/login`
-2. System checks if user exists in database
-3. If new user, creates account automatically
-4. Returns user data for frontend session management
-5. (Future) JWT token implementation
+**Interrogare il database**
+Accedi a Prisma Studio a: `http://localhost:51212` per attivarlo in locale lancia
+```bash
+cd backend
+pnpm prisma:studio
+```
 
-## 📈 **Features Implemented**
+**Accedere al frontend**
+Il frontend è raggiungibile a: `http://localhost:${NEXTJS_PORT}` usa il valore della porta della variabile NEXTJS_PORT
 
-### ✅ **Completed**
-- [x] Fullstack TypeScript setup
-- [x] Dockerized development environment
-- [x] PostgreSQL with Prisma ORM
-- [x] REST API with NestJS
-- [x] Modern frontend with NextJS 14
-- [x] Complete quiz system (CRUD + answers)
-- [x] User authentication system
-- [x] Leaderboard functionality
-- [x] API documentation with Swagger
-- [x] Comprehensive testing setup
-- [x] Type-safe DTOs with validation
+**Log di docker**
+Per monitorare i container docker lancia il comando
+```bash
+docker-compose logs -f
+```
 
+### Build per la produzione
 
-## 🚢 **Deployment Options**
-
-### **Recommended (Free Tier)**
-- **Frontend**: Vercel (NextJS optimized)
-- **Backend**: Railway or Render
-- **Database**: Railway PostgreSQL or Supabase
-
-### **Production Commands**
 ```bash
 # Build for production
 pnpm build
-
-# Docker production build
-docker-compose -f docker-compose.prod.yml up -d
 ```
 
-## 🛠️ **Development Guidelines**
-
-### **Code Style**
-- **TypeScript**: Strict mode enabled
-- **Formatting**: Prettier configuration
-- **Linting**: ESLint with custom rules
-- **Commits**: Conventional commit messages
-
-
-
-## 🆘 **Troubleshooting**
+## **Troubleshooting**
 
 ### **Common Issues**
 
 1. **Database connection failed**
    ```bash
-   # Check if PostgreSQL is running
-   docker ps | grep quiz_db
+   # Controlla se PostgreSQL è avviato
+   docker ps | grep ${POSTGRES_DB}
 
    # Reset database
-   docker-compose down -v
-   docker-compose up
+   ./bin/stop_db.sh
+   ./bin/start_db.sh
+   ```
+   Riavvia il backend
+
+1. **Port already in use**
+   ```bash
+   # Se ricevi l'errore EADDRINUSE, significa che un'istanza precedente di NestJS è ancora attiva.
+   # Usa il valore della variabile NEXTJS_PORT o NESTJS_PORT per trovare il PID che ci servirà per chiudere il processo
+   lsof -i :${NEXTJS_PORT}
+
+   # Se ottieni una risposta, leggi il numero sotto alla colonna PID e chiudi il processo con questo comando
+   kill -9 <PID>
    ```
 
-2. **Port already in use**
-   ```bash
-   # Change ports in docker-compose.yml
-   ports:
-     - "5433:5432"  # Different host port
-   ```
+   Oppure se hai un processo attivo dovuto ad un altro servizio e non puoi chiuderlo, allora puoi specifica una porta differente agendo nello script `bin/configure_env`
 
-3. **Prisma migrations**
+1. **Migrazione Prisma**
    ```bash
-   # Generate migrations
-   npx prisma migrate dev
+   bin/prisma_migrate.sh
 
    # Reset database
-   npx prisma migrate reset
+   bin/prisma_reset.sh
    ```
 
-### **Development Tips**
-- Use `docker-compose logs -f` to monitor all services
-- Prisma Studio available at `http://localhost:51212`
-- API documentation at `http://localhost:3001/api/docs`
-- Frontend hot reload on `http://localhost:3000`
+## **Risorse per imparare**
 
-## 📚 **Learning Resources**
+- [Documentazione NestJS](https://docs.nestjs.com/)
+- [Documentazione NextJS](https://nextjs.org/docs)
+- [Documentazione Prisma](https://www.prisma.io/docs/)
+- [Docker Compose](https://docs.docker.com/compose/)
+- [Manuale TypeScript](https://www.typescriptlang.org/docs/)
 
-- [NestJS Documentation](https://docs.nestjs.com/)
-- [NextJS Documentation](https://nextjs.org/docs)
-- [Prisma Documentation](https://www.prisma.io/docs/)
-- [Docker Compose Reference](https://docs.docker.com/compose/)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+## **Licenza**
 
-## 👥 **Contributing**
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit changes following conventional commits
-4. Push to the branch
-5. Open a Pull Request
-
-## 📄 **License**
-
-Nessuna licenza, solo impara divertendoti
-
----
-
-**Maintained by**: Alessandro Bianco
-**Contact**: mydevhero@gmail.com
-
----
-
-
-
-troubleshoting
-
-se vuoi cambiare i dati ambiente, agisci sui valori di default di bin/configure_env.sh
-per ogni variabile che modifichi ricorda di fare unset nell'ambiente per eliminare quella vecchia in modo da settare il nuovo valore di default
-poi nel backend lancia pnpm prisma:generate per dargli la nuova DATABASE_URL
-test:
-
-docker exec quiz_db psql -U $POSTGRES_USER -d $POSTGRES_DB -c "SELECT current_database();"
-(fare uno script in bin per questo sopra)
-
-aggiungi pnpm prisma:studio nella doc
-
-Una piccola chicca per il tuo README
-
-Nelle istruzioni di avvio, potresti aggiungere una sezione "Troubleshooting":
-
-    "Se ricevi l'errore EADDRINUSE, significa che un'istanza precedente di NestJS è ancora attiva. Usa lsof -i :3001 per trovare il PID e kill -9 <PID> per chiuderlo."
+Nessuna! Ti chiedo solo di imparare divertendoti ^^
 
 *Built with ❤️ using modern web technologies*
