@@ -43,7 +43,7 @@ remove_container() {
 
 # Funzione per creare nuovo container
 create_container() {
-    docker-compose up -d postgres
+    docker compose up -d postgres
 }
 
 # Rigenera PrismaClient
@@ -116,28 +116,3 @@ echo "PostgreSQL pronto su localhost:${ACTUAL_PORT:-$CONFIGURED_PORT}"
 echo "Container: $CONTAINER_NAME"
 echo "Database: ${POSTGRES_DB:-quiz_db}"
 echo "Utente: ${POSTGRES_USER:-user}"
-
-# SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-#
-# source "$SCRIPT_DIR/configure_env.sh"
-#
-# # Controllo se il container esiste
-# if ! docker ps -a --format '{{.Names}}' | grep -q '^quiz_db$'; then
-#     # Se non esiste, lo creo
-#     echo "Creazione container quiz_db..."
-#     docker-compose create
-# fi
-#
-# # Se esiste, lo avvio
-# if ! docker ps --format '{{.Names}}' | grep -q '^quiz_db$'; then
-#     echo "Avvio container quiz_db..."
-#     docker start quiz_db
-#
-#     until docker exec quiz_db pg_isready -U user > /dev/null 2>&1; do
-#         sleep 1
-#     done
-# else
-#     echo "quiz_db è già in esecuzione"
-# fi
-#
-# echo "PostgreSQL pronto"
