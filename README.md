@@ -285,5 +285,3 @@ pnpm build
 ## **Licenza**
 
 Nessuna! Ti chiedo solo di imparare divertendoti ^^
-
-*Built with ❤️ using modern web technologies*
