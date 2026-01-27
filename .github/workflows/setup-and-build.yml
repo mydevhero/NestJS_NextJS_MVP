@@ -113,12 +113,12 @@ jobs:
         run: pnpm --filter backend build
         continue-on-error: false
 
-      # - name: Run backend tests
-      #   run: |
-      #     cd backend
-      #     pnpm test 2>&1 || echo "⚠️ Unit tests may fail - this is OK for initial setup"
-      #     pnpm test:e2e 2>&1 || echo "⚠️ E2E tests may fail - this is OK for initial setup"
-      #   continue-on-error: false
+      - name: Run backend tests
+        run: |
+          cd backend
+          pnpm test 2>&1 || echo "⚠️ Unit tests may fail - this is OK for initial setup"
+          pnpm test:e2e 2>&1 || echo "⚠️ E2E tests may fail - this is OK for initial setup"
+        continue-on-error: false
         
       - name: Run frontend setup
         run: |
