@@ -15,7 +15,7 @@
     "prisma:reset": "../bin/prisma_reset.sh && pnpm run prisma:seed",
     "prisma:studio": "../bin/prisma_studio.sh",
     "dev:seed": "pnpm run prisma:generate && pnpm run prisma:seed",
-    "start": ". ../bin/configure_env.sh && node dist/main",
+    "start": ". ../bin/configure_env.sh && node dist/main/src",
     "dev": ". ../bin/configure_env.sh && nest start --watch",
     "start:debug": ". ../bin/configure_env.sh && nest start --debug --watch",
     "start:prod": ". ../bin/configure_env.sh && node dist/main",
@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
+    "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^11.2.5",
