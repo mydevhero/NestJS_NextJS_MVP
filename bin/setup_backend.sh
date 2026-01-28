@@ -22,6 +22,10 @@ nest new backend --skip-git --strict --package-manager pnpm # Specifica a NestJS
 
 cd "${BACKEND_DIR}" || exit 1;
 
+
+# Copia package.json
+cp "$SETUP_BACKEND_DIR/package.json" .
+
 # TUTORIAL(1) - Segui il tutorial -> https://www.prisma.io/docs/getting-started/prisma-postgres/quickstart/prisma-orm
 # TUTORIAL(2) - Segui il tutorial -> https://www.prisma.io/docs/getting-started/prisma-orm/add-to-existing-project/prisma-postgres
 
@@ -58,6 +62,7 @@ pnpm exec npx prisma init --datasource-provider postgresql --output ../generated
 echo '# Solo come esempio' > .env
 echo '# DATABASE_URL="postgresql://user:password@localhost:5432/quiz_db?schema=public"' >> .env
 
+pnpm install --frozen-lock
 ################################################################################
 # Aggiungiamo i dati di progetto                                               #
 ################################################################################
@@ -77,10 +82,6 @@ nest generate controller auth
 nest generate service auth
 
 # mkdir -p src/quiz/dto/ || exit 1;
-
-
-# Copia package.json
-cp "$SETUP_BACKEND_DIR/package.json" .
 
 # Copia tsconfig.json
 cp "$SETUP_BACKEND_DIR/tsconfig.json" .
