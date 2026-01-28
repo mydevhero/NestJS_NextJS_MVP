@@ -13,8 +13,24 @@ FRONTEND_DIR="$PROJECT_DIR/frontend"
 
 source "$SCRIPT_DIR/configure_env.sh"
 
+cd "$PROJECT_DIR"
+
+# Inizia creando il frontend
+pnpm npx create-next-app@latest frontend \
+  --typescript \
+  --tailwind \
+  --eslint \
+  --app \
+  --src-dir \
+  --import-alias "@/*" \
+  --use-pnpm \
+  --yes
+
 cd "${FRONTEND_DIR}" || exit 1;
 
-cp -a "$SETUP_FRONTEND_DIR"/* .
+#creato da next con la flag use-pnpm
+rm pnpm-lock.yaml
+
+cp -a "$SETUP_FRONTEND_DIR/package.json" .
 
 # vim: set tabstop=2 shiftwidth=2 expandtab colorcolumn=121 :

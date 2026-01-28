@@ -8,13 +8,19 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$SCRIPT_DIR/.."
-SETUP_FRONTEND_DIR="$PROJECT_DIR/setup/frontend"
-FRONTEND_DIR="$PROJECT_DIR/frontend"
+SETUP_BACKEND_DIR="$PROJECT_DIR/setup/backend"
+BACKEND_DIR="$PROJECT_DIR/backend"
 
 source "$SCRIPT_DIR/configure_env.sh"
 
-cd "${FRONTEND_DIR}" || exit 1;
+cd "$PROJECT_DIR"
 
-cp -a "$SETUP_FRONTEND_DIR"/* .
+# NOTA(1) - Crea progetto nest
+nest new backend --skip-git --strict --package-manager pnpm # Specifica a NestJS di utilizzare pnpm come gestore pacchetti
+
+cd "${BACKEND_DIR}" || exit 1;
+
+# Copia package.json
+cp "$SETUP_BACKEND_DIR/package.json" .
 
 # vim: set tabstop=2 shiftwidth=2 expandtab colorcolumn=121 :

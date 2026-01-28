@@ -14,34 +14,24 @@ BACKEND_DIR="$PROJECT_DIR/backend"
 
 source "$SCRIPT_DIR/configure_env.sh"
 
-
-cd "$PROJECT_DIR"
-
-# NOTA(1) - Crea progetto nest
-nest new backend --skip-git --strict --package-manager pnpm # Specifica a NestJS di utilizzare pnpm come gestore pacchetti
-
 cd "${BACKEND_DIR}" || exit 1;
-
-
-# Copia package.json
-cp "$SETUP_BACKEND_DIR/package.json" .
 
 # TUTORIAL(1) - Segui il tutorial -> https://www.prisma.io/docs/getting-started/prisma-postgres/quickstart/prisma-orm
 # TUTORIAL(2) - Segui il tutorial -> https://www.prisma.io/docs/getting-started/prisma-orm/add-to-existing-project/prisma-postgres
 
 # TUTORIAL(1.1) - https://www.prisma.io/docs/getting-started/prisma-postgres/quickstart/prisma-orm#1-create-a-new-project
-pnpm add typescript tsx @types/node --save-dev
+###pnpm add typescript tsx @types/node --save-dev
 pnpm exec npx tsc --init
 
 # TUTORIAL(1.2) - https://www.prisma.io/docs/getting-started/prisma-postgres/quickstart/prisma-orm#2-install-required-dependencies
 # TUTORIAL(2.1) - https://www.prisma.io/docs/getting-started/prisma-orm/add-to-existing-project/prisma-postgres#1-set-up-prisma-orm
-pnpm add prisma @types/node @types/pg --save-dev
-pnpm add @prisma/client @prisma/adapter-pg pg dotenv
+###pnpm add prisma @types/node @types/pg --save-dev
+###pnpm add @prisma/client @prisma/adapter-pg pg dotenv
 
 # Swagger e lettura delle variabili d'ambiente (@nestjs/config)
-pnpm add @nestjs/swagger @nestjs/config swagger-ui-express
-pnpm add -D @types/swagger-ui-express
-pnpm add class-validator class-transformer
+###pnpm add @nestjs/swagger @nestjs/config swagger-ui-express
+###pnpm add -D @types/swagger-ui-express
+###pnpm add class-validator class-transformer
 
 
 # TUTORIAL(1.3) - https://www.prisma.io/docs/getting-started/prisma-postgres/quickstart/prisma-orm#3-configure-esm-support
@@ -62,7 +52,8 @@ pnpm exec npx prisma init --datasource-provider postgresql --output ../generated
 echo '# Solo come esempio' > .env
 echo '# DATABASE_URL="postgresql://user:password@localhost:5432/quiz_db?schema=public"' >> .env
 
-pnpm install --frozen-lock
+#pnpm install
+#rm pnpm-lock.yaml
 ################################################################################
 # Aggiungiamo i dati di progetto                                               #
 ################################################################################
